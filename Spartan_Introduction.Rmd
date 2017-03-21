@@ -1,0 +1,100 @@
+---
+title: "Spartan Introduction - Coding Club"
+author: "David Wilkinson"
+date: "21 March 2017"
+output: html_document
+---
+
+# What is Spartan?
+
+The University of Melbourne's general purpose hybrid traditional high performance computing system (HPC) with cloud instances from the NeCTAR Research Cloud and attached Research Data Storage Services (RDSS).
+
+It is designed to suit the needs of researchers whose desktop/laptop is not up to the particular task. Models running slow, datasets are too big, not enough cores, application licensing issues, etc.
+
+Spartan consists of:
+
+*  a management node for system administrators,
+*  a login node for users to connect to the system and submit jobs,
+*  a small number of 'bare metal' compute nodes for multinode tasks,
+*  any 'bare metal' user-procured hardware (e.g., departmental nodes),
+*  vHPC cloud compute nodes for overflow and GPGPU tasks, and
+*  general cloud compute nodes.
+
+# Accessing Spartan
+
+## Getting an Account
+
+To gain access to Spartan you need to create an account.
+
+*  Via Karaage at [link](https://dashboard.hpc.unimelb.edu.au/karaage)
+*  Need to create a project
++  Needs a project leader (you), and you can invite collaborators for joint projects
++  Needs a project title/description to demonstrate research goals and/or research support 
+*  Takes ~2 days for approval
+
+## Required Programs
+
+To connnect to Spartan you will need a Secure Shell (SSH) and a Secure File Transfer Protocol (SFTP) client.
+
+
+
+
+o	Use PuTTY:
+	Host name: spartan.hpc.unimelb.edu.au (?)
+	Port: leave as default (whereas Boab needs a defined port)
+	Connection type: SSH
+	Login button (I think, can’t see now that I’m there already)
+o	Then use WinSCP:
+	File protocol: SFTP
+	Host name: Spartan.hpc.unimelb.edu.au
+	Port number: leave as default
+	Username/password
+	Save
+o	Now you have everything necessary to access Spartan
+•	Loading your files:
+o	WinSCP graphical interface to drag and drop between local computer and Spartan home directory
+•	Creating your SLURM file:
+o	Simple Linux Utility for Resource Management
+o	This is where you set the resource parameters for the model run
+o	Best to do so in Notepad++ (for Windows users only?) due to difference in end of line notation between Oss.
+o	Series of #SBATCH commands
+o	List common examples
+•	Modifying your code files:
+o	As Spartan runs on linux you may need to de-Windows-ify the code
+o	/ or \ in file paths is OS dependant
+o	Line end notation
+•	Now that you have all of the pieces, putting it together and submitting to Spartan
+o	Open SSH client
+o	Log-in
+o	Either sbatch or sinteractive gets you out of Log-in node and into a compute node
+	Don’t run models in log-in node or admins will get upset and kill your job
+o	Sbatch is a direct command (i.e. queue this model)
+	Sbatch filename.slurm
+o	Sinteractive lets you do things step by step
+	Sinteractive
+	Module load R
+	R
+	Filename
+	Lets you test that things work as intended on Spartan before submitting a job to queue
+o	Useful commands:
+	Squeue -u <username>
+•	Lets you see the status of all of your jobs
+	Squeue -u <username> -t RUNNING (or PENDING
+	Scancel <jobid>
+•	Cancel particular job
+	Scancel -u <username>
+•	Cancel all of your jobs
+	Scancel -t PENDING -u <username>
+•	Cancel all pending jobs
+	Man <function name>
+•	Look at manual for function. Like ?in R
+•	Man spartan
+	scontrol show jobid -d <jobid>
+•	detailed information on jobs
+	sstat --format=AveCPU,AvePages,AveRSS,AveVMSize,JobID -j <jobid> --allsteps
+•	information on currently running jobs
+	sacct -j <jobid> --format=JobID,JobName,MaxRSS,Elapsed
+	sacct -u <username> --format=JobID,JobName,MaxRSS,Elapsed
+•	these two provide additional information on completed jobs i.e. runtime, memory used, etc
+•	Other commands that I need to explore further:
+o	Salloc and srun for parallelisation
