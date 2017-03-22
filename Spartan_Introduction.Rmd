@@ -2,7 +2,9 @@
 title: "Spartan Introduction - Coding Club"
 author: "David Wilkinson"
 date: "21 March 2017"
-output: html_document
+output: 
+  html_document:
+    toc: TRUE
 ---
 
 # What is Spartan?
@@ -80,13 +82,122 @@ Inside a WinSCP session you will have dual file explorer windows: your local mac
 
 Your two clients are now set up and everything is ready to access Spartan. After set-up you don't need to directly deal with PuTTy anymore as there is a button in the WinSCP toolbar to open a session.
 
+***
 ![](WinSCP_PuTTY.png)
+
+***
 
 ### Mac/Linux Users
 
 See Nick
 
-## SLURM Files
+## Log in to Spartan
+
+Now that you have everything in place to access Spartan, open a session and you will be prompted to log in. Note: This wont display characters as you type your password.
+
+***
+![](Spartan_log_in.png)
+
+***
+
+The text that loads at the beginning gives you the usual university IT policy spiel, a couple of getting started prompts, a warning about the log-in node, and the obligatory 300 reference.
+
+***
+![](Spartan_300.png)
+
+***
+
+## Help
+
+Typing `man Spartan` loads the university's Spartan FAQ. Rather than loading the entire document it loads it a screen at a time and you have to navigate by keyboard commands. For now, you will only need these:
+
+*  `h`: help, shows you the keyboard shortcuts
+*  `q`: quit the document and go back to the Spartan interface
+*  `^` is used in place of the control/command button, so `^V` is Ctrl+V
+*  `Enter/Return` will let you advance by one line
+*  `^Y` will let you go back by one line
+*  `^V` will let you advance by one window
+*  `^B` will let you go back by one window
+
+***
+![](Spartan_key_shortcuts.png)
+
+***
+
+If you want help with a particular function in Spartan you can type `man <function name>` (without < >). This works like `?` in R.
+
+# Using Spartan
+
+The log-in node on Spartan is a shared resource between all users and is only allocated the memory to handle log-ins and job submission. Do not run jobs in the log-in node or the admins will get upset and kill the job. There are two ways to get out of the log-in node and into proper compute nodes: `sinteractive` and `sbatch`.
+
+## sinteractive
+
+The `sinteractive` command will give you access to a compute node (as soon as available) where you can work interactively with your job. While you can build an entire job in this method, that is better saved for `sbatch` and `sinteractive` used for testing/debugging. There are default settings for `sinteractive` which should be enough for most uses, but they can be modified if needed like so:
+
+```{r eval=FALSE}
+sinteractive --time=00:10:00 --nodes=1 --ntasks=2
+```
+
+This will give you access to one node with two processors for ten minutes (default values I think). Lets open a default node and explore some basic commands. Type `sinteractive`. This makes a request for a default compute node (1), and you have to wait for the resource to become available (2) before you can continue.
+
+***
+![](Spartan_sinteractive.png)
+
+***
+
+The `ls` command will show you everything in your current directory. Folders show up in blue.
+
+***
+![](Spartan_ls.png)
+
+***
+
+The `cd` command will let you change your current directory. As Spartan is linux based it uses / not \ for directories (unlike Windows). The \ character is used to say that the preceeding term is a special character. Lets change into a subfolder and see what is inside. Spartan lets you pre-fill file paths/names using the tab key like R, but it will pre-fill everything until a choice needs to be made, and won't provide options at that stage, but will complete everything once no more divergences exist.
+
+***
+![](Spartan_cd.png)
+
+***
+
+The programs available on Spartan as referred to as modules, and you can see a complete list using `module avail`.
+
+***
+![](Spartan_module_avail.png)
+
+***
+
+Loading a particular module requires two commands: `module load <module name>` (to load the module on the node) and `<module name>` (to start the program). To load R for example:
+
+***
+![](Spartan_module_load.png)
+
+***
+
+## sbatch
+
+The `sbatch` command is used for direct job submission to Spartan using the batch system called SLURM (Simple Linux Utility for Resource Management). 
+
+***
+![](slurm.jpg)
+
+***
+
+This system tracks resources throughout the cluster and builds a queue of jobs to run, and when resources are available the job scheduler will direct your job to a compute nod to run.
+
+***
+![](Spartan_queue_example.png)
+
+***
+
+To submit a job using the `sbatch` command you need to write a slurm file that sets up your instance (amount of memory, number of processors, etc) and runs your model.
+
+***
+![](Slurm_file_example.png)
+
+***
+
+
+
 •	Creating your SLURM file:
 o	Simple Linux Utility for Resource Management
 o	This is where you set the resource parameters for the model run
