@@ -32,27 +32,61 @@ To gain access to Spartan you need to create an account.
 +  Needs a project title/description to demonstrate research goals and/or research support 
 *  Takes ~2 days for approval
 
+***
+![](Karaage.png)
+
+***
+
 ## Required Programs
 
-To connnect to Spartan you will need a Secure Shell (SSH) and a Secure File Transfer Protocol (SFTP) client.
+To connnect to Spartan you will need a Secure Shell (SSH) and a Secure File Transfer Protocol (SFTP) client. The SSH client is your interface with Spartan while the SFTP client is used to transfer files from your local computer to your Spartan home directory.
 
+### Windows Users
 
+Use PuTTY as your SSH client. This is an easy set-up with the following five steps:
 
+1.  Set your host name: spartan.hpc.unimelb.edu.au
+2.  Set your port number: leave as default (whereas Boab users need a defined port)
+3.  Set your connection type: SSH
+4.  Name your session to make it easy for future log-ins: Whatever you like i.e. Spartan
+5.  Save your session details
 
-o	Use PuTTY:
-	Host name: spartan.hpc.unimelb.edu.au (?)
-	Port: leave as default (whereas Boab needs a defined port)
-	Connection type: SSH
-	Login button (I think, can’t see now that I’m there already)
-o	Then use WinSCP:
-	File protocol: SFTP
-	Host name: Spartan.hpc.unimelb.edu.au
-	Port number: leave as default
-	Username/password
-	Save
-o	Now you have everything necessary to access Spartan
-•	Loading your files:
-o	WinSCP graphical interface to drag and drop between local computer and Spartan home directory
+***
+![](PuTTY_steps.png)
+
+***
+
+Your first log-in to Spartan via the SSH client creates your home directory on Spartan so it is important to do that before setting up your SFTP client.
+
+Use WinSCP as your SFTP client. This is an easy process with the following six steps:
+
+1.  Set your file protocol: SFTP
+2.  Set your hhost name: spartan.hpc.unimelb.edu.au
+3.  Set your port number:leave as default (whereas Boab users need a defined port)
+4.  Enter your username
+5.  Enter your password (note, this will show more characters than you entered when saved)
+6.  Login
+
+***
+![](WinSCP_steps.png)
+
+***
+Inside a WinSCP session you will have dual file explorer windows: your local machine (left) and your Spartan home directory). If you have not made your initial log-in to Spartan via your SSH client you will have a blank white screen in the right-hand window. Transferring files between the two directories is with a simple drag-and-drop interface.
+
+***
+![](WinSCP_home.png)
+
+***
+
+Your two clients are now set up and everything is ready to access Spartan. After set-up you don't need to directly deal with PuTTy anymore as there is a button in the WinSCP toolbar to open a session.
+
+![](WinSCP_PuTTY.png)
+
+### Mac/Linux Users
+
+See Nick
+
+## SLURM Files
 •	Creating your SLURM file:
 o	Simple Linux Utility for Resource Management
 o	This is where you set the resource parameters for the model run
