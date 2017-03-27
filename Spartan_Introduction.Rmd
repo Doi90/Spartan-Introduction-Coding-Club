@@ -361,5 +361,17 @@ Now that we know how to submit jobs to Spartan either through `sinteractive` or 
     +  For example: `sacct -j <jobid> --format JobID,jobname,NTasks,nodelist,MaxRSS,MaxVMSize,AveRSS,AveVMSize,ExitCode,CPUTime`
 
 
+# Some useful additional information and links
 
-Salloc and srun for parallelisation
+*  There are simple example slurm files for the most common modules at `/usr/local/common/` (including R, MATLAB, and Python)
+*  [Online Spartan FAQ](https://dashboard.hpc.unimelb.edu.au/spartan-faq). Same as using `man spartan`
+*  `srun` and `salloc` functions are used for parallel jobs
+*  [Running R in parallel using the rslurm package](https://cran.r-project.org/web/packages/rslurm/vignettes/rslurm-vignette.html)
+
+```{r eval=FALSE, echo=FALSE}
+"GNU Terry Pratchett"
+```
+
+***
+***
+
