@@ -35,8 +35,8 @@ To gain access to Spartan you need to create an account.
 
 *  Via Karaage at [link](https://dashboard.hpc.unimelb.edu.au/karaage)
 *  Need to create a project
-+  Needs a project leader (you), and you can invite collaborators for joint projects
-+  Needs a project title/description to demonstrate research goals and/or research support 
++  Need a project leader (you), and you can invite collaborators for joint projects
++  Need a project title/description to demonstrate research goals and/or research support 
 *  Takes ~2 days for approval
 
 ***
@@ -78,14 +78,14 @@ Use WinSCP as your SFTP client. This is an easy process with the following six s
 <center>![](WinSCP_steps.png)</center>
 
 ***
-Inside a WinSCP session you will have dual file explorer windows: your local machine (left) and your Spartan home directory). If you have not made your initial log-in to Spartan via your SSH client you will have a blank white screen in the right-hand window. Transferring files between the two directories is with a simple drag-and-drop interface.
+Inside a WinSCP session you will have dual file explorer windows: your local machine (left) and your Spartan home directory (right). If you have not made your initial log-in to Spartan via your SSH client you will have a blank white screen in the right-hand window. Transferring files between the two directories is achieved with a simple drag-and-drop interface.
 
 ***
 <center>![](WinSCP_home.png)</center>
 
 ***
 
-Your two clients are now set up and everything is ready to access Spartan. After set-up you don't need to directly deal with PuTTY anymore as there is a button in the WinSCP toolbar to open a session.
+Your two clients are now set up and everything is ready to access Spartan. After set-up you don't need to deal directly with PuTTY as a separate program anymore as there is a button in the WinSCP toolbar to open a session.
 
 ***
 <center>![](WinSCP_PuTTY.png)</center>
@@ -140,13 +140,13 @@ The log-in node on Spartan is a shared resource between all users and is only al
 
 ## sinteractive
 
-The `sinteractive` command will give you access to a compute node (as soon as available) where you can work interactively with your job. While you can build an entire job in this method, that is better saved for `sbatch` and `sinteractive` used for testing/debugging. There are default settings for `sinteractive` which should be enough for most uses, but they can be modified if needed like so:
+The `sinteractive` command will give you access to a compute node (as soon as available) where you can work interactively with your job. While you can submit an entire job in this method, that is better saved for `sbatch` and `sinteractive` used for testing/debugging. There are default settings for `sinteractive` which should be enough for most uses, but they can be modified if needed like so:
 
 ```{r eval=FALSE}
-sinteractive --time=00:10:00 --nodes=1 --ntasks=2
+sinteractive --time=00:10:00 --nodes=1 --ntasks=1 --cpus-per-task=2
 ```
 
-This will give you access to one node with two processors for ten minutes (default values I think). Lets open a default node and explore some basic commands. Type `sinteractive`. This makes a request for a default compute node (1), and you have to wait for the resource to become available (2) before you can continue.
+This will give you access to one node to perform one task with two processors for ten minutes (default values I think). Lets open a default node and explore some basic commands. Type `sinteractive`. This submits a request for a default compute node (1), and you have to wait for the resource to become available (2) before you can continue.
 
 ***
 <center>![](Spartan_sinteractive.png)</center>
@@ -190,7 +190,7 @@ The `sbatch` command is used for direct job submission to Spartan using the batc
 
 ***
 
-This system tracks resources throughout the cluster and builds a queue of jobs to run, and when resources are available the job scheduler will direct your job to a compute nod to run.
+This system tracks resources throughout the cluster and builds a queue of jobs to run, and when resources are available the job scheduler will direct your job to a compute node to run.
 
 ***
 <center>![](Spartan_queue_example.png)</center>
@@ -206,22 +206,22 @@ To submit a job using the `sbatch` command you need to write a slurm file that s
 
 Slurm files can be as simple or as complex as required depending on the job you want to run. Slurm files always need to begin with `#!/bin/bash` on the first line. Why? I have no idea. Ask Nick. On subsequent lines you set up your instance first using `#SBATCH <your command here>` and then the commands to run your job. Some useful `#SBATCH` commands to consider are:
 
-*  `SBATCH --job-name=<name>`: Lets you give your job a name alongside its job id. Useful if you're running lots of jobs at once. By default is sets it to your file name, or replace <name> with your name of choice like this:
+*  `#SBATCH --job-name=<name>`: Lets you give your job a name alongside its job id. Useful if you're running lots of jobs at once. By default it sets it to your file name, or replace <name> with your name of choice like this:
 
 ```{r eval=FALSE}
 #SBATCH --job-name=MyJob
 ```
 
-*  `#SBATCH -p <partition>`: This is where you select which partition on Spartan your job will run. For most jobs you will set your partition as `cloud` which can run single node jobs of up to 8 CPUs and up to 50GB of memory. For multi-node jobs or >50GB of memory set it as `physical`, and if you have access to a dedicated partition then use `your partition name`. In most cases you will use the following:
+*  `#SBATCH -p <partition>`: This is where you select which partition on Spartan your job will run. For most jobs you will set your partition as `cloud` which can run single node jobs of up to 8 CPUs and up to 50GB of memory. For multi-node jobs or >50GB of memory set it as `physical` (up to 200GB), and if you have access to a dedicated partition then use `your partition name`. In most cases you will use the following:
 
 ```{r eval=FALSE}
 #SBATCH -p cloud
 ```
 
-*  `#SBATCH --time=<>`: As Spartan is a communal resource and jobs are allocated a share from a queue you need to specify an amount of time that you want your instance to remain open. As you aren't likely to know how long your model will need to run for (outside of a rough guess) it is recommended you give a conservative estimate. If necessary you can contact Spartan support and get your time extended. There are multiple formats for entering a time value depending on the scale of your job: "minutes", "minutes:seconds",  "hours:minutes:seconds", "days-hours", "days-hours:minutes" and "days-hours:minutes:seconds". For example, a one hour instance could be called with the following:
+*  `#SBATCH --time=<>`: As Spartan is a communal resource and jobs are allocated a share from a queue you need to specify a maximum amount of walltime that you want your instance to remain open. As you aren't likely to know how long your model will need to run for (outside of a rough guess) it is recommended that you give a conservative estimate. If necessary you can contact Spartan support and get your time extended. There are multiple formats for entering a time value depending on the scale of your job: "minutes", "minutes:seconds",  "hours:minutes:seconds", "days-hours", "days-hours:minutes" and "days-hours:minutes:seconds". Many SLURM documentations will list setting `--time=0` as a way to set an indefinite walltime but this will automatically be rejected by Spartan. For example, a one hour instance could be called with the following:
 
 ```{r eval=FALSE}
-#SBATCH --time=1:0:0   # hours:minutes:seconds format
+#SBATCH --time=01:00:00   # hours:minutes:seconds format
 ```
 
 *  `#SBATCH --nodes=<number>`: You need to request an allocation of compute nodes. Most jobs will be single node jobs, but there is the ability to run jobs over multiple nodes that talk to each other. It is not recommended to try running multiple communicating nodes via the cloud partition, use the physical partition instead. To call a single node use the following:
@@ -230,19 +230,19 @@ Slurm files can be as simple or as complex as required depending on the job you 
 #SBATCH --nodes=1
 ```
 
-*  `#SBATCH --ntasks=<number>`: This line informs the Slurm controller that job steps within the allocation will launch a maximum of *number* tasks and to provide sufficient resources. Most jobs will need to a perform a single task which can be set as follows:
+*  `#SBATCH --ntasks=<number>`: This line informs the SLURM controller that job steps within the allocation will launch a maximum of *number* tasks and to provide sufficient resources. Most jobs will need to a perform a single task which can be set as follows:
 
 ```{r eval =FALSE}
 #SBATCH --ntasks=1
 ```
 
-*  `#SBATCH --cpus-per-task=<number>`: This informs the Slurm controller that each task will need *number* of processors per task. Cloud nodes have access to eight cores each. To allocate four processors (like on a quad-core desktop) you would set:
+*  `#SBATCH --cpus-per-task=<number>`: This informs the SLURM controller that each task will need *number* of processors per task. Cloud nodes have access to eight cores each. To allocate four processors (like on a quad-core desktop without multi-threading) you would set:
 
 ```{r eval =FALSE}
 #SBATCH --cpus-per-task=4
 ```
 
-*  `#SBATCH --mem=<number>`: This is where you nominate the amount of memory required per node (in megabytes). Cloud nodes have access to up to 50GB of memory, physical nodes are used for large jobs of up to 200GB. To request 10GB of memory (remembering that 1GB = 1024MB) you would use:
+*  `#SBATCH --mem=<number>`: This is where you nominate the maximum amount of memory required per node (in megabytes). Cloud nodes have access to up to 50GB of memory, physical nodes are used for large jobs of up to 200GB. To request 10GB of memory (remembering that 1GB = 1024MB) you would use:
 
 ```{r eval =FALSE}
 #SBATCH --mem=10240
@@ -252,7 +252,7 @@ Slurm files can be as simple or as complex as required depending on the job you 
     +  `BEGIN`: the model is out of the queue and started to run (includes start time and time in queue)
     +  `END`: the model has completed (includes run-time)
     +  `FAIL`: the model has failed  (includes run-time)
-    +  `REQUEUE`: the model has been re-queued (i.e. someone with priority has you booted off)
+    +  `REQUEUE`: the model has been re-queued (i.e. someone with priority has booted off)
     +  `ALL`: all of the above plus `STAGE_OUT`
     +  `TIME_LIMIT_50`: reached 50% of your allocated time
     +  `TIME_LIMIT_80`: reached 80% of your allocated time
@@ -305,7 +305,7 @@ module load R
 R --vanilla < tutorial.R 
 ```
 
-Assuming this SLURM file is named "MyFile.slurm", you can submit you job to the queue from the log-in node using the following command
+Assuming this Slurm file is named "MyFile.slurm", you can submit your job to the queue from the log-in node using the following command
 
 ```{r eval=FALSE}
 sbatch MyFile.slurm
@@ -348,14 +348,14 @@ Now that we know how to submit jobs to Spartan either through `sinteractive` or 
 
 *  `sstat`: This command is used to show memory information of running jobs:
     +  For non-admin users there is no need to specify a username as you are restricted to your own jobs only by default
-    +  You can use the `--format` option to specify the details you want to see. You can list multiple comma-separated fields to view multiples
+    +  You can use the `--format` option to specify the details you want to see. You can list multiple comma-separated fields to view more details
     +  `sstat --helpformat` will list the available fields to view
     +  Browsing `man sstat` will let you see descriptions for each field
     +  For example: `sstat -j <jobid> --format JobID,NTasks,Nodelist,MaxRSS,MaxVMSize,AveRSS,AveVMSize`
 
 *  `sacct`: This command is used to show memory information of completed jobs:
     +  For non-admin users there is no need to specify a username as you are restricted to your own jobs only by default
-    +  You can use the `--format` option to specify the details you want to see. You can list multiple comma-separated fields to view multiples
+    +  You can use the `--format` option to specify the details you want to see. You can list multiple comma-separated fields to view more details
     +  `sacct --helpformat` will list the available fields to view (many more options that `sstat`)
     +  Browsing `man sacct` will let you see descriptions for each field
     +  For example: `sacct -j <jobid> --format JobID,jobname,NTasks,nodelist,MaxRSS,MaxVMSize,AveRSS,AveVMSize,ExitCode,CPUTime`
@@ -365,7 +365,9 @@ Now that we know how to submit jobs to Spartan either through `sinteractive` or 
 
 *  There are simple example slurm files for the most common modules at `/usr/local/common/` (including R, MATLAB, and Python)
 *  [Online Spartan FAQ](https://dashboard.hpc.unimelb.edu.au/spartan-faq). Same as using `man spartan`
+*  [Online SLURM FAQ](http://www.ceci-hpc.be/slurm_faq.html)
 *  `srun` and `salloc` functions are used for parallel jobs
+*  [Support for multi-core/multi-threaded architecture](https://slurm.schedmd.com/mc_support.html)
 *  [Running R in parallel using the rslurm package](https://cran.r-project.org/web/packages/rslurm/vignettes/rslurm-vignette.html)
 
 ```{r eval=FALSE, echo=FALSE}
