@@ -96,14 +96,47 @@ Your two clients are now set up and everything is ready to access Spartan. After
 
 ### Mac/Linux Users
 
-See Nick
+Unlike for Windows, OSX and (most) linux operating systems already have SSH installed and have a fully functional terminal built in.
+So to SSH into the Spartan log-in node, you just need to open up a terminal (the `Terminal` application on a mac), and issue the command:
 
-SSH client: in built Terminal?
-SFTP: Cyberduck
+```
+ssh myusername@spartan.hpc.unimelb.edu.au
+```
+
+replacing `myusername` with your username. Then enter your password (no characters will show, that's normal) and hit return. That should look something like this:
+
+***
+<center>![](terminal_ssh_steps.png)</center>
+
+***
+
+As for Windows, your first log-in to Spartan via the SSH client creates your home directory on Spartan so it is important to do that before setting up your SFTP client.
+
+SFTP is also installed on most OSX and linux versions, so you could transfer files to Spartan directly from the terminal (do `man sftp` in the terminal if you're interested in that). However it's normally easier to use a SFTP client with a graphical user interface. One nice option for OSX (that also works on Windows) is [Cyberduck](https://cyberduck.io). Once installed, you can add a new connection to Spartan with the following steps:
+
+1.  Clicking on the `+` in the lower-left corner
+2.  Set the connection type to SFTP
+3.  Give the connection a name
+4.  Set the server name: `spartan.hpc.unimelb.edu.au`
+5.  Set the port number to 22
+6.  Enter your username
+
+***
+<center>![](cyberduck_sftp_setup.png)</center>
+
+***
+
+You can then close the connection details box, and double-click on the new connection to initiate it. This will pop up a file explorer like the image below, listing the files in your working directory on Spartan. You can drag and drop files between there and your computer.
+
+***
+<center>![](cyberduck_session.png)</center>
+
+***
+
 
 ## Log in to Spartan
 
-Now that you have everything in place to access Spartan, open a session and you will be prompted to log in. Note: This wont display characters as you type your password.
+Now that you have everything in place to access Spartan, open an SSH session (in putty or Terminal). as before, this wont display characters as you type your password.
 
 ***
 <center>![](Spartan_log_in.png)</center>
